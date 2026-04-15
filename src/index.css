@@ -330,7 +330,7 @@ header {
 /*-----------------------------------------------------------------------------------*/
 
 /*--------------------efectos del input--------------------------------*/
-.input-neon {
+/*.input-neon {
   width: 30%;
   padding: 15px;
   margin-top: 40px;
@@ -341,6 +341,43 @@ header {
   color: rgb(227, 243, 3);
   outline: none;
   transition: 0.3s;
+}
+
+.input-neon:focus {
+  box-shadow: 0 0 10px rgb(227, 243, 3), 0 0 20px rgb(227, 243, 3);
+}*/
+
+.input-neon {
+  width: 100%;
+  max-width: 400px;
+  padding: 15px;
+  margin-top: 40px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid rgb(227, 243, 3);
+  background: #111;
+  color: rgb(227, 243, 3);
+  outline: none;
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .input-neon {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+  .input-neon {
+    width: 90%;
+    font-size: 0.9rem;
+    padding: 10px;
+    margin-top: 20px;
+  }
 }
 
 .input-neon:focus {
