@@ -1,0 +1,492 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont;
+
+  /* Fondos principal y el de el Header*/
+  --bg-color-primary: #000000;
+  --bg-color-secundary: #860909;
+
+  /* Textos de los titulos*/
+  --text-title: #c0e00b;
+  --text-muted: #000000;
+  --text-btn-light: #000000;
+  
+
+  /* UI: Bordes y Sombras */
+  --border-card: #f8f40f;
+  --shadow-main: rgba(0, 0, 0, 0.1);
+  --shadow-soft: rgba(0, 0, 0, 0.06);
+  --shadow-img: rgba(0, 0, 0, 0.2);
+
+  /* Colores de los botones */
+  --color-favorito: #fbbf24; /* Violeta oscuro mágico */
+  --color-noFavorito-hover: #ec720d;
+  
+
+  /*colores del mensaje cunado no existe un juego en el catalogo*/
+  --neon-text-color: #f40;
+  --neon-border-color: #08f;
+}
+
+body {
+  background-color: var(--bg-color-primary);
+}
+
+h1 {
+  padding: 1.3rem;
+  color:#f59e0b
+}
+
+/* ----------------Estilos del Header----------------------------- */
+header {
+  /*background-color: var(--bg-color-secundary);*/
+  background-image: url("./assets/header.jpg");
+  background-size: cover;        /* ocupa todo */
+  background-position: center;   /* centrada */
+  background-repeat: no-repeat;  /* no se repite */
+
+  border-bottom: 2px solid var(--border-card);
+  padding: 1.0rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px var(--shadow-main);
+  margin-bottom: 2rem;
+  color: var(--text-title);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+/*------------------------------------------------------------------------------------------------*/
+
+/*----------------Estilos para el container de las targetas y las targetas--------------------------------*/
+#cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: rgb(0, 0, 0);
+  
+}
+
+.card {
+  position: relative;
+  width: 330px;
+  height: 500px;
+  margin: 20px;
+  
+  border-radius: 14px;
+  box-shadow:
+    0 4px 6px -1px var(--shadow-main),
+    0 2px 4px -1px var(--shadow-soft);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card .face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    
+    overflow: hidden;
+    transition: .5s;
+    box-sizing: border-box;
+}
+
+.card .front {
+    transform: perspective(600px) rotateY(0deg);
+    box-shadow: 0 5px 10px #000;
+}
+
+.card .front img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card .front h3 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    color: #fff;
+    background: rgba(0,0,0,.4);
+    text-align: center;
+}
+
+.card .back {
+    transform: perspective(600px) rotateY(180deg);
+    background: rgb(3, 35, 54);
+    padding: 15px;
+    color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    box-shadow: 0 5px 10px #000;
+}
+
+
+
+.card .back h3 {
+    font-size: 30px;
+    margin-top: 20px;
+    letter-spacing: 2px;
+}
+
+.card .back p {
+    letter-spacing: 1px;
+} 
+
+.card:hover .front {
+    transform: perspective(600px) rotateY(180deg);
+}
+
+.card:hover .back {
+    transform: perspective(600px) rotateY(360deg);
+}
+
+/* Estilo cuando la destacado es true */
+.card-destacado .face {
+  border: 7px solid gold;
+  box-shadow: 0 0 17px gold;
+}
+
+/*Estilo cuanado FAVORITO es true (con destacado true o destacado false → animación)*/
+.card-favorito .face::before {
+  content: "";
+  position: absolute;
+  inset: -3px; /* hace que sobresalga como borde */
+  border-radius: 12px;
+  z-index: -1;
+  background: linear-gradient(
+    45deg,
+    #0cbfcc,
+    #066ee4,
+    #1100a8,
+    #0cbfcc
+  );
+  background-size: 300% 300%;
+  animation: neonRotate 4s linear infinite;
+}
+
+
+
+#descripcion {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-style: italic;
+}
+
+
+
+/*Estilos cuando destacados es true*/
+.card-destacado:not(.card-favorito) .face {
+  background: linear-gradient(
+    45deg,
+    red,
+    orange,
+    yellow,
+    red
+  );
+}
+
+@keyframes neonRotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+/*Para que el contenido este siempre ensima del efecto*/
+.card .face > * {
+  position: relative;
+  z-index: 1;
+}
+
+ 
+.card-destacado:not(.card-favorito) .back h3 {
+  color: #1100ff;
+}
+
+.card-destacado:not(.card-favorito) .back p {
+  color: #1100ff;
+}
+/*------------------------------------------------------------------------------------------------------------------*/
+
+ 
+  /*----------------------------Estilos para los botones dentro de las targetas----------------------------------*/
+  /* Contenedor invisible para agrupar los botones abajo */
+  .buttons-container {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    padding-top: 1rem;
+  }
+
+.targeta-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background: linear-gradient(45deg, #fbbf24, #f59e0b);
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.targeta-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow:
+    0 0 10px #fbbf24,
+    0 0 20px #f59e0b;
+}
+
+
+.targeta-button:active {
+  transform: scale(0.95);
+}
+
+
+.icono {
+  font-size: 18px;
+  display: inline-block;
+}
+
+/* favorito */
+.targeta-button.activo {
+  background: linear-gradient(45deg, #fbbf24, #f59e0b);
+  color: rgb(247, 0, 0);
+}
+
+.targeta-button.activo .icono {
+  color: red;
+  animation: latido 1s ease infinite;
+}
+
+/* no favorito → hover */
+.targeta-button:not(.activo):hover .icono {
+  animation: latido 0.8s ease infinite;
+}
+
+@keyframes latido {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.25); }
+  50%  { transform: scale(1); }
+  75%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/*-------------------------------------------------------------------------------------------------------*/
+  
+
+
+/*----------------efectos del titulo-----------------------------------------*/  
+.titulo {
+  font-size: 2.5em;
+  margin: 20px 0;
+  text-align: center;
+  cursor: default;
+  color: #FF9900;
+  font-family: Audiowide;
+  animation: neon 2s ease-in-out infinite alternate;
+  user-select: none;
+}
+
+@keyframes neon {
+  from {
+    text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #FF9900,
+      0 0 20px #FF9900;
+  }
+  to {
+    text-shadow: 
+      0 0 10px #fff,
+      0 0 20px #FF9900,
+      0 0 30px #FF9900;
+  }
+}
+
+/*-----------------------------------------------------------------------------------*/
+
+/*--------------------efectos del input--------------------------------*/
+.input-neon {
+  width: 30%;
+  padding: 15px;
+  margin-top: 40px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid rgb(227, 243, 3);
+  background: #111;
+  color: rgb(227, 243, 3);
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-neon:focus {
+  box-shadow: 0 0 10px rgb(227, 243, 3), 0 0 20px rgb(227, 243, 3);
+}
+
+/*----------------------------------------------------------------------------------------*/ 
+
+
+
+/*------------------------Estilo del mensaje si el input esta vacio "Escribí algo para buscar..."--------------------*/
+.mensaje {
+  text-align: center;
+  margin-top: 10px;
+  color:#d9ff00;
+  font-size: 1rem;
+
+    
+}
+/*--------------------------------------------------------------------------------------------*/
+
+/*--------------------efectos del titulo del Menu "Grandes Juegos de Play:"----------------------------*/
+
+.subTexMain {
+  position: relative;
+  margin: 0 auto 20px;
+  padding: 10px 40px;
+  text-align: center;
+  background-color: #875e46;
+}
+
+.subTexMain::before, .subTexMain::after {
+  content: '';
+  width: 80px;
+  height: 100%;
+  background-color: #724b34;
+
+  /* position ribbon ends behind and slightly lower */
+  position: absolute;
+  z-index: -1;
+  top: 20px;
+  
+  /* clip ribbon end shape */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 25% 50%);
+
+  /* draw and position the folded ribbon bit */
+  background-image: linear-gradient(45deg, transparent 50%, #5d3922 50%);
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+.subTexMain::before {
+  left: -60px;
+}
+
+.subTexMain::after {
+  right: -60px;
+  transform: scaleX(-1); /* flip horizontally */
+}
+
+/* everything below is for demo appearances and not important to the concept */
+
+.conatenedor-subTexMain {
+  display: grid;
+  align-items: center;
+  min-height: 20vh;
+  margin: 0;
+  padding: 20px 80px;
+  margin-top: -40px;
+  font-family: 'Merriweather', serif
+}
+
+@media (max-width: 400px) {
+  .subTexMain { font-size: 1.5rem; }
+}
+
+/*----------------------------------------------------------------------------------------*/ 
+
+
+/*------------------------Estilo del mensaje si no se encuentro ningun resultado "NO HAY RESULTADO"-----------------------------*/
+
+.contenedorMensajeBusqueda {
+  font-family:sans-serif, Arial;  
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background: #222222;
+  min-height: 30vh;
+}
+
+.mensajeBusqueda {
+  font-size: 1.8rem;
+  font-weight: 200;
+  font-style: italic;
+  color: #fff;
+  padding: 3rem 6rem 3rem;
+  border: 0.4rem solid #fff;
+  border-radius: 2rem;
+  text-transform: uppercase;
+  animation: flicker 1.5s infinite alternate;     
+}
+
+
+.mensajeBusqueda:focus {
+  outline: none;
+}
+
+/* Animate neon flicker */
+@keyframes flicker {
+    
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      
+        text-shadow:
+            -0.2rem -0.2rem 1rem #fff,
+            0.2rem 0.2rem 1rem #fff,
+            0 0 2rem var(--neon-text-color),
+            0 0 4rem var(--neon-text-color),
+            0 0 6rem var(--neon-text-color),
+            0 0 8rem var(--neon-text-color),
+            0 0 10rem var(--neon-text-color);
+        
+        box-shadow:
+            0 0 .5rem #fff,
+            inset 0 0 .5rem #fff,
+            0 0 2rem var(--neon-border-color),
+            inset 0 0 2rem var(--neon-border-color),
+            0 0 4rem var(--neon-border-color),
+            inset 0 0 4rem var(--neon-border-color);        
+    }
+    
+    20%, 24%, 55% {        
+        text-shadow: none;
+        box-shadow: none;
+    }    
+}
+/*------------------------------------------------------------------------------------*/
+
+
+
+  
+  
+
+
+
+
+
+
+
